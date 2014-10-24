@@ -95,11 +95,16 @@ private slots:
     void propertyChanged(const QString &property,const QDBusVariant &value);
     void onContextAdd(const QDBusObjectPath &path, const QVariantMap &propertyMap);
     void onContextRemove(const QDBusObjectPath &path);
+    void onServiceOwnerChanged(const QString & serviceName, const QString & oldOwner, const QString & newOwner);
+    void onServiceRegistered(const QString & serviceName);
+    void onServiceUnregistered(const QString & serviceName);
 
 private:
     void updateProperty(const QString &property, const QVariant &value);
+    void observe(const QString &service, const QDBusConnection &conn);
 
     QOfonoConnectionManagerPrivate *d_ptr;
+    bool m_available;
 };
 
 #endif // QOFONOCONNECTIONMANAGER_H
