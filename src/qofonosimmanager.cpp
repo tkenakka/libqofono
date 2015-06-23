@@ -127,6 +127,7 @@ void QOfonoSimManager::propertyChanged(const QString &property, const QVariant &
 {
     SUPER::propertyChanged(property, value);
     if (property == kPresent) {
+qDebug() << "xyz property: " << property << " changed to: " << value;
         const bool present = value.value<bool>();
         Q_EMIT presenceChanged(present);
         if (!present) {
@@ -145,6 +146,9 @@ void QOfonoSimManager::propertyChanged(const QString &property, const QVariant &
                     removeProperty(otherKey);
                 }
             }
+        }
+        else {
+            refreshProperties();
         }
     } else if (property == kSubscriberIdentity) {
         Q_EMIT subscriberIdentityChanged(value.value<QString>());

@@ -161,6 +161,18 @@ void QOfonoObject::setDbusInterface(QDBusAbstractInterface *iface, const QVarian
     }
 }
 
+void QOfonoObject::refreshProperties()
+{
+   qDebug() << ">>> xyz";
+   if (d_ptr->interface) {
+      connect(new QDBusPendingCallWatcher(
+	       d_ptr->interface->asyncCall("GetProperties"), d_ptr->interface),
+               SIGNAL(finished(QDBusPendingCallWatcher*)),
+               SLOT(onGetPropertiesFinished(QDBusPendingCallWatcher*)));
+    }
+   qDebug() << "<<< xyz";
+}
+
 void QOfonoObject::dbusInterfaceDropped()
 {
     if (!d_ptr->properties.isEmpty()) {
@@ -185,13 +197,14 @@ void QOfonoObject::onGetPropertiesFinished(QDBusPendingCallWatcher *watch)
 
 void QOfonoObject::getPropertiesFinished(const QVariantMap &properties, const QDBusError *error)
 {
+qDebug();///TODO: debug
     if (!error) {
         for (QVariantMap::ConstIterator it = properties.constBegin();
              it != properties.constEnd(); ++it) {
             updateProperty(it.key(), it.value());
         }
         d_ptr->initialized = true;
-        if (isValid()) {
+        if (isValid()) { ///TODO: emittoi tämän turhaan
             Q_EMIT validChanged(true);
         }
     } else {

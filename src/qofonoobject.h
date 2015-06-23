@@ -76,6 +76,8 @@ protected:
     void resetDbusInterface(const QVariantMap *properties = NULL);
     void fixObjectPath(const QString &path);
 
+    void refreshProperties();
+
 private slots:
     void onGetPropertiesFinished(QDBusPendingCallWatcher *watch);
     void onSetPropertyFinished(QDBusPendingCallWatcher *watch);
